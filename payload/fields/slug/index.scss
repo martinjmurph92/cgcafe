@@ -1,0 +1,19 @@
+.field-type.slug-field-component {
+  .label-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+
+    .auto-generate-note {
+      font-size: 0.75rem;
+      color: var(--theme-elevation-500);
+      font-style: italic;
+    }
+  }
+
+  .lock-button {
+    margin: 0;
+    padding-bottom: 0.3125rem;
+  }
+}

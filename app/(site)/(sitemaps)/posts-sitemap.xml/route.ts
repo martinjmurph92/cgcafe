@@ -1,0 +1,54 @@
+import { unstable_cache } from "next/cache";
+import { getServerSideSitemap, type ISitemapField } from "next-sitemap";
+
+import { getPayloadClient } from "@/lib/payload";
+import { getServerSideURL } from "@/lib/url";
+
+const getPostsSitemap = unstable_cache(
+  async (): Promise<ISitemapField[]> => {
+    const payload = await getPayloadClient();
+
+    const SITE_URL = getServerSideURL();
+
+    const results = await payload.find({
+      collection: "posts",
+      overrideAccess: false,
+      draft: false,
+      depth: 0,
+      limit: 1000,
+      pagination: false,
+      where: {
+        _status: {
+          equals: "published",
+        },
+      },
+      select: {
+        slug: true,
+        updatedAt: true,
+      },
+    });
+
+    const dateFallback = new Date().toISOString();
+
+    const sitemap = results.docs
+      ? results.docs
+          .filter((post) => Boolean(post?.slug))
+          .map((post) => ({
+            loc: `${SITE_URL}/post/${post?.slug}`,
+            lastmod: post.updatedAt || dateFallback,
+          }))
+      : [];
+
+    return sitemap;
+  },
+  ["posts-sitemap"],
+  {
+    tags: ["site", "posts", "posts-sitemap"],
+  }
+);
+
+export async function GET() {
+  const sitemap = await getPostsSitemap();
+
+  return getServerSideSitemap(sitemap);
+}

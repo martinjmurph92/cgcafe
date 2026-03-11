@@ -1,0 +1,17 @@
+:root {
+  --color-primary: #5249d9;
+  --color-secondary: #2f006f;
+  --color-accent: #23e39d;
+  --color-tertiary: #ffada0;
+  --color-white: #ffffff;
+
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: clamp(16px, 3.33vw, 18px);
+  --text-xl: clamp(18px, 3.75vw, 20px);
+
+  --text-h1: fluidCalc(24px, 56px);
+  --text-h2: fluidCalc(20px, 26px);
+  --text-h3: fluidCalc(18px, 24px);
+  --text-h4: fluidCalc(16px, 22px);
+}

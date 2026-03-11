@@ -1,0 +1,425 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* CG Café design tokens */
+@theme {
+  --breakpoint-xs: 30rem;
+
+  /* CG Café colours */
+  --color-charcoal: #1a1a17;
+  --color-charcoal-2: #242420;
+  --color-charcoal-3: #2e2e29;
+  --color-gold: #c9a84c;
+  --color-gold-light: #e2c27a;
+  --color-gold-dark: #a07830;
+  --color-cream: #f5efd8;
+  --color-cream-muted: #d4c9a8;
+
+  /* Fallbacks for existing theme */
+  --color-primary: #c9a84c;
+  --color-primary-light: #e2c27a;
+  --color-secondary: #1a1a17;
+  --color-accent: #c9a84c;
+  --color-accent-light: #e2c27a;
+  --color-tertiary: #d4c9a8;
+  --color-light: #f5efd8;
+  --color-border: rgba(201, 168, 76, 0.2);
+  --color-destructive: #ef4444;
+  --color-body: #f5efd8;
+
+  --text-lg: clamp(16px, 3.33vw, 18px);
+  --text-xl: clamp(18px, 3.75vw, 20px);
+  --text-3xl: 26px;
+  --text-4xl: fluidCalc(24px, 32px);
+
+  --text-h1: fluidCalc(24px, 56px);
+  --text-h2: fluidCalc(20px, 26px);
+  --text-h3: fluidCalc(18px, 22px);
+  --text-h4: fluidCalc(16px, 20px);
+  --text-h5: 18px;
+  --text-h6: 16px;
+
+
+  --radius-sm: 4px;
+  --radius-md: 10px;
+  --radius-lg: 20px;
+  --radius-gold: 4px;
+  --radius-gold-md: 10px;
+  --radius-gold-lg: 20px;
+
+  --transition-cgcafe: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@layer base {
+
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    @apply border-border outline-transparent;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  main [id] {
+    scroll-margin-top: 72px;
+  }
+
+  a {
+    @apply hover:underline;
+  }
+
+  button {
+    @apply cursor-pointer appearance-none text-left;
+  }
+
+  body {
+    font-family: var(--font-body), Georgia, serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display), Georgia, serif;
+    @apply leading-tight font-normal;
+  }
+
+  h1 {
+    @apply text-h1 leading-[1.15];
+  }
+
+  h2 {
+    @apply text-h2;
+  }
+
+  h3 {
+    @apply text-h3;
+  }
+
+  h4 {
+    @apply text-h4;
+  }
+
+  h5 {
+    @apply text-h5;
+  }
+
+  h6 {
+    @apply text-h6;
+  }
+
+  ul,
+  ol {
+    @apply marker:text-accent;
+  }
+}
+
+@utility container {
+  @apply mx-auto max-w-7xl px-4;
+}
+
+.rich-text {
+
+  h2:has(+ h3),
+  h3:has(+ h4),
+  h4:has(+ h5),
+  h5:has(+ h6) {
+    @apply !mb-2;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  ul,
+  ol {
+    @apply not-last:mb-4 md:not-last:mb-6;
+  }
+
+  li a,
+  p a {
+    @apply font-medium break-words underline;
+  }
+
+  .list-bullet {
+    @apply list-disc space-y-4 pl-[1.25em];
+  }
+
+  .list-number {
+    @apply list-decimal space-y-4 pl-[1.25em];
+  }
+
+  strong {
+    @apply font-bold;
+  }
+
+  hr {
+    @apply my-8 border-border;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════ */
+/* CG Café component styles                                  */
+/* ═══════════════════════════════════════════════════════════ */
+
+/* Base & scrollbar */
+.cgcafe-body {
+  @apply overflow-x-hidden;
+}
+
+/* iOS horizontal slider fix: body overflow-x-hidden breaks child scroll on Safari.
+   Apply overflow to html instead so sliders can establish their own scroll context. */
+@supports (-webkit-touch-callout: none) {
+  html {
+    overflow-x: hidden;
+  }
+  .cgcafe-body {
+    overflow-x: visible;
+  }
+}
+
+/* Horizontal slider - iOS-compatible with momentum scroll */
+.cgcafe-slider {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.cgcafe-slider::-webkit-scrollbar {
+  display: none;
+}
+
+.cgcafe-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-gold-dark) var(--color-charcoal);
+}
+
+.cgcafe-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cgcafe-scrollbar::-webkit-scrollbar-track {
+  background: var(--color-charcoal);
+}
+
+.cgcafe-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-gold-dark);
+  border-radius: 3px;
+}
+
+/* Grain texture overlay */
+.cgcafe-grain::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+}
+
+/* Gold rule divider */
+.gold-rule {
+  @apply block w-[60px] h-0.5 mx-auto;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-gold),
+    transparent
+  );
+}
+
+.gold-rule--left {
+  @apply ml-0 mr-auto;
+}
+
+/* Typography utilities */
+.cgcafe-label {
+  @apply text-[0.72rem] uppercase tracking-[0.2em] font-bold;
+  font-family: var(--font-sans);
+  color: var(--color-gold);
+}
+
+.cgcafe-script {
+  font-family: var(--font-script);
+  font-size: 1.3em;
+}
+
+/* Buttons */
+.btn-primary {
+  @apply inline-flex items-center gap-2.5 px-8 py-3.5 rounded font-bold uppercase tracking-[0.15em] transition-all duration-300 no-underline hover:no-underline;
+  background: var(--color-gold);
+  color: var(--color-charcoal);
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  border: 1px solid var(--color-gold);
+}
+
+.btn-primary:hover {
+  background: var(--color-gold-light);
+  border-color: var(--color-gold-light);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(201, 168, 76, 0.25);
+}
+
+.btn-outline {
+  @apply inline-flex items-center gap-2.5 px-8 py-3.5 rounded font-bold uppercase tracking-[0.15em] transition-all duration-300 no-underline hover:no-underline;
+  background: transparent;
+  color: var(--color-cream);
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  border: 1px solid rgba(245, 239, 216, 0.3);
+}
+
+.btn-outline:hover {
+  border-color: var(--color-cream);
+  transform: translateY(-2px);
+}
+
+/* Container */
+.cgcafe-container {
+  @apply max-w-[1200px] mx-auto px-4 md:px-8 lg:px-16;
+}
+
+/* Section spacing */
+.cgcafe-section {
+  @apply py-16 md:py-24 lg:py-32;
+}
+
+/* Nav links (desktop & mobile) */
+.nav-links a,
+.nav-links button {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-cream-muted);
+  position: relative;
+  transition: color 0.3s;
+}
+
+/* Underline on desktop only */
+.nav-links-desktop a::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--color-gold);
+  transition: width 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links button:hover,
+.nav-links a.nav-link-active,
+.nav-links button.nav-link-active {
+  color: var(--color-gold);
+}
+
+.nav-links-desktop a:hover::after,
+.nav-links-desktop a.nav-link-active::after {
+  width: 100%;
+}
+
+/* Menu item hover bar */
+.menu-item {
+  position: relative;
+}
+
+.menu-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--color-gold);
+  transform: scaleY(0);
+  transition: var(--transition-cgcafe);
+}
+
+.menu-item:hover::before {
+  transform: scaleY(1);
+}
+
+/* Contact form CG Café styling */
+.cgcafe-contact-form label {
+  font-family: var(--font-sans), sans-serif !important;
+  font-size: 0.72rem !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  font-weight: 700 !important;
+  color: var(--color-gold) !important;
+}
+
+.cgcafe-contact-form input,
+.cgcafe-contact-form textarea {
+  width: 100%;
+  background: var(--color-charcoal-2) !important;
+  border: 1px solid rgba(201, 168, 76, 0.15) !important;
+  border-radius: 4px;
+  padding: 11px 14px;
+  color: var(--color-cream) !important;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.9rem;
+  transition: border-color 0.3s;
+}
+
+.cgcafe-contact-form input:focus,
+.cgcafe-contact-form textarea:focus {
+  border-color: var(--color-gold) !important;
+  box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.08);
+}
+
+.cgcafe-contact-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.cgcafe-contact-form button[type="submit"] {
+  width: 100%;
+  background: var(--color-gold) !important;
+  color: var(--color-charcoal) !important;
+  border: none;
+  padding: 14px;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 8px;
+}
+
+.cgcafe-contact-form button[type="submit"]:hover {
+  background: var(--color-gold-light) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(201, 168, 76, 0.25);
+}
+
+/* iOS fix: overflow-hidden + border-radius fails to clip on WebKit. Apply clip-path/mask only on iOS. */
+/* Use closest-side so the mask circle fills the element (50% with farthest-corner made it tiny). */
+@supports (-webkit-touch-callout: none) {
+  .hero-image-inner {
+    clip-path: circle(50%);
+    -webkit-clip-path: circle(50%);
+    -webkit-mask-image: radial-gradient(circle closest-side at center, black 100%, transparent 100%);
+    mask-image: radial-gradient(circle closest-side at center, black 100%, transparent 100%);
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+  }
+}
