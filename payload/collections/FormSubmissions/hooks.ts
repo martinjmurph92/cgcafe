@@ -31,8 +31,8 @@ export const sendEmail: CollectionAfterChangeHook<FormSubmission> = async ({
 
   const html = await render(
     ContactFormNotificationEmail({
-      name: doc.name,
-      email: doc.email,
+      name: doc.name ?? "",
+      email: doc.email ?? "",
       phone: doc.phone ?? null,
       message: doc.message ?? null,
       logoUrl,
