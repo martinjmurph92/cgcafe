@@ -20,4 +20,6 @@ export const email = nodemailerAdapter({
   defaultFromName: env.EMAIL_FROM_NAME,
   defaultFromAddress: env.EMAIL_FROM_ADDRESS,
   transportOptions,
+  // Skip SMTP verification at startup so build succeeds when SMTP is unavailable (e.g. Mailpit not running)
+  skipVerify: true,
 });

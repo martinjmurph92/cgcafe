@@ -15,7 +15,7 @@ import * as z from "zod";
  */
 export const env = createEnv({
   server: {
-    DATABASE_URL: z.string(),
+    DATABASE_URL: z.string().min(1, "DATABASE_URL must be set"),
     PAYLOAD_SECRET: z.string(),
     PREVIEW_SECRET: z.string(),
     EMAIL_FROM_NAME: z.string(),
