@@ -25,6 +25,7 @@
 *.sql
 *.dump
 *.pem
+/flat_html/
 
 # debug
 npm-debug.log*

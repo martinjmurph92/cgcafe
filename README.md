@@ -43,6 +43,8 @@ Copy `.env.example` to `.env` and set at least:
 
 For **local email testing**, see the section below. Media is stored locally in the `media/` directory.
 
+**Email by environment:** locally we use **Mailpit** (SMTP); in production we use **Resend**. Set `RESEND_API_KEY` in production (see below).
+
 ## Local development
 
 ### Database (Postgres)
@@ -61,19 +63,21 @@ createdb aqua
 To catch outgoing emails locally:
 
 ```bash
-docker run -d --name mailpit -p 1025:1025 -p 8026:8025 axllent/mailpit
+pnpm mailpit
+# or: docker run -d --name mailpit -p 1025:1025 -p 8026:8025 axllent/mailpit
 ```
 
-In `.env`:
+In `.env` keep the SMTP settings (Mailpit catches emails). View emails at http://localhost:8025.
+
+### Production email (Resend)
+
+In production, emails are sent via **Resend**. Add to your production environment:
 
 ```
-SMTP_HOST="localhost"
-SMTP_PORT="1025"
-SMTP_USER=""
-SMTP_PASS=""
+RESEND_API_KEY="re_xxxxxxxxx"
 ```
 
-View emails at http://localhost:8026.
+Replace `re_xxxxxxxxx` with your real API key from [resend.com](https://resend.com). Verify your domain in Resend so `EMAIL_FROM_ADDRESS` can send.
 
 ### Email template preview
 

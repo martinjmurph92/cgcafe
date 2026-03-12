@@ -17,6 +17,11 @@ import { isMedia } from "@/lib/type-guards";
 import * as Integrations from "@/components/integrations";
 import Providers from "@/components/providers";
 
+// The site layout uses cookies and draft mode (for admin bar and preview),
+// so the entire segment must be treated as dynamic to avoid
+// "Page changed from static to dynamic at runtime" errors.
+export const dynamic = "force-dynamic";
+
 const fontDisplay = Playfair_Display({
   variable: "--font-display",
   subsets: ["latin"],

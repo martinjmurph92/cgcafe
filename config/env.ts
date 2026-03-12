@@ -24,6 +24,8 @@ export const env = createEnv({
     SMTP_PORT: z.string(),
     SMTP_USER: z.string().optional(),
     SMTP_PASS: z.string().optional(),
+    /** Resend API key – required in production when using Resend for email delivery */
+    RESEND_API_KEY: z.string().optional(),
     UPLOAD_FILE_SIZE_LIMIT: z.string(),
   },
   client: {
