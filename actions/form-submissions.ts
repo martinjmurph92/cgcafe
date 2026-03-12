@@ -2,12 +2,10 @@
 
 import * as z from "zod";
 
-import { debugLog } from "@/lib/debug-log";
 import { getPayloadClient } from "@/lib/payload";
 import { contactFormSchema } from "@/lib/schemas";
 
 export async function submitForm(values: z.infer<typeof contactFormSchema>) {
-  debugLog("[contact-form] submitForm called");
   const payload = await getPayloadClient();
 
   const submission = await payload.create({
@@ -20,6 +18,5 @@ export async function submitForm(values: z.infer<typeof contactFormSchema>) {
     },
   });
 
-  debugLog("[contact-form] Form submission created, id:", submission.id);
   return submission;
 }

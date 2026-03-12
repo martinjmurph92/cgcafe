@@ -2,16 +2,8 @@ import { nodemailerAdapter } from "@payloadcms/email-nodemailer";
 import { resendAdapter } from "@payloadcms/email-resend";
 
 import { env } from "@/config/env";
-import { debugLog } from "@/lib/debug-log";
 
 const isProduction = process.env.NODE_ENV === "production";
-
-debugLog(
-  "[email] NODE_ENV=",
-  process.env.NODE_ENV,
-  "→ using",
-  isProduction ? "Resend" : "Nodemailer (Mailpit)"
-);
 
 
 if (isProduction && !env.RESEND_API_KEY) {
