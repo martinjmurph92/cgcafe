@@ -19,6 +19,9 @@ export const sendEmail: CollectionAfterChangeHook<FormSubmission> = async ({
   operation,
   req: { payload },
 }) => {
+  try {
+  console.log("[contact-form] sendEmail hook called, operation:", operation);
+
   if (operation !== "create") return doc;
 
   const settings = await payload.findGlobal({
@@ -52,13 +55,18 @@ export const sendEmail: CollectionAfterChangeHook<FormSubmission> = async ({
         .filter(Boolean)
     : [];
 
-  if (!recipients.length) return doc;
+  console.log("[contact-form] config.email.emailTo:", emailTo, "→ recipients:", recipients);
+
+  if (!recipients.length) {
+    console.warn("[contact-form] No recipients configured in Config → Emails. Skipping email.");
+    return doc;
+  }
 
   const subject =
     (config as { email?: { subject?: string } })?.email?.subject ||
     "Website Contact Form Submission";
 
-  await Promise.allSettled(
+  const results = await Promise.allSettled(
     recipients.map((recipient) =>
       payload.sendEmail({
         to: recipient,
@@ -68,5 +76,17 @@ export const sendEmail: CollectionAfterChangeHook<FormSubmission> = async ({
     )
   );
 
+  results.forEach((result, i) => {
+    if (result.status === "fulfilled") {
+      console.log(`[contact-form] Email sent to ${recipients[i]}:`, result.value);
+    } else {
+      console.error(`[contact-form] Email failed for ${recipients[i]}:`, result.reason);
+    }
+  });
+
   return doc;
+  } catch (err) {
+    console.error("[contact-form] sendEmail hook error:", err);
+    throw err;
+  }
 };

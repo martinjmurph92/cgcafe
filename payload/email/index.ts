@@ -5,6 +5,10 @@ import { env } from "@/config/env";
 
 const isProduction = process.env.NODE_ENV === "production";
 
+console.log(
+  `[email] NODE_ENV=${process.env.NODE_ENV} → using ${isProduction ? "Resend" : "Nodemailer (Mailpit)"}`
+);
+
 if (isProduction && !env.RESEND_API_KEY) {
   throw new Error(
     "RESEND_API_KEY must be set in production. Add it to your environment variables.",

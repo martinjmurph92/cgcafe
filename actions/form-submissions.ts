@@ -6,6 +6,7 @@ import { getPayloadClient } from "@/lib/payload";
 import { contactFormSchema } from "@/lib/schemas";
 
 export async function submitForm(values: z.infer<typeof contactFormSchema>) {
+  console.log("[contact-form] submitForm called");
   const payload = await getPayloadClient();
 
   const submission = await payload.create({
@@ -18,5 +19,6 @@ export async function submitForm(values: z.infer<typeof contactFormSchema>) {
     },
   });
 
+  console.log("[contact-form] Form submission created, id:", submission.id);
   return submission;
 }
