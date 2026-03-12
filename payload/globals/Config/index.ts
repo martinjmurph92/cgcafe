@@ -106,13 +106,13 @@ export const Config: GlobalConfig = {
           fields: [
             {
               name: "emailTo",
-              label: "Email To",
+              label: "Contact form notification email(s)",
               type: "text",
               required: true,
               admin: {
                 description:
-                  "The email address where form submissions will be sent.",
-                placeholder: '"Email Sender" <sender@email.com>',
+                  "Email address(es) to receive contact form submissions. Use commas to add multiple.",
+                placeholder: "you@example.com, colleague@example.com",
               },
             },
             {

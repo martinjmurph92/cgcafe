@@ -3,8 +3,6 @@ import type { CollectionAfterChangeHook } from "payload";
 import { render } from "@react-email/render";
 
 import { ContactFormNotificationEmail } from "@/emails/contact-form-notification";
-import { getAdminEmailRecipients } from "@/lib/emails";
-import { getSettings } from "@/actions/global";
 import { getServerSideURL } from "@/lib/url";
 import { isMedia } from "@/lib/type-guards";
 
@@ -23,7 +21,11 @@ export const sendEmail: CollectionAfterChangeHook<FormSubmission> = async ({
 }) => {
   if (operation !== "create") return doc;
 
-  const settings = await getSettings();
+  const settings = await payload.findGlobal({
+    slug: "settings",
+    depth: 2,
+    draft: false,
+  });
   const logo = settings?.general?.logo;
   const logoUrl = getLogoUrl(logo);
   const siteName =
@@ -40,15 +42,27 @@ export const sendEmail: CollectionAfterChangeHook<FormSubmission> = async ({
     })
   );
 
-  const recipients = await getAdminEmailRecipients();
+  const config = await payload.findGlobal({ slug: "config", depth: 0 });
+  const emailTo = (config as { email?: { emailTo?: string; subject?: string } })
+    ?.email?.emailTo;
+  const recipients = emailTo
+    ? emailTo
+        .split(",")
+        .map((e) => e.trim())
+        .filter(Boolean)
+    : [];
 
   if (!recipients.length) return doc;
+
+  const subject =
+    (config as { email?: { subject?: string } })?.email?.subject ||
+    "Website Contact Form Submission";
 
   await Promise.allSettled(
     recipients.map((recipient) =>
       payload.sendEmail({
         to: recipient,
-        subject: "Website Contact Form Submission",
+        subject,
         html,
       })
     )
