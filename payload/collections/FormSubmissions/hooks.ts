@@ -3,6 +3,7 @@ import type { CollectionAfterChangeHook } from "payload";
 import { render } from "@react-email/render";
 
 import { ContactFormNotificationEmail } from "@/emails/contact-form-notification";
+import { debugLog } from "@/lib/debug-log";
 import { getServerSideURL } from "@/lib/url";
 import { isMedia } from "@/lib/type-guards";
 
@@ -20,7 +21,7 @@ export const sendEmail: CollectionAfterChangeHook<FormSubmission> = async ({
   req: { payload },
 }) => {
   try {
-  console.log("[contact-form] sendEmail hook called, operation:", operation);
+  debugLog("[contact-form] sendEmail hook called, operation:", operation);
 
   if (operation !== "create") return doc;
 
@@ -55,10 +56,10 @@ export const sendEmail: CollectionAfterChangeHook<FormSubmission> = async ({
         .filter(Boolean)
     : [];
 
-  console.log("[contact-form] config.email.emailTo:", emailTo, "→ recipients:", recipients);
+  debugLog("[contact-form] config.email.emailTo:", emailTo, "→ recipients:", recipients);
 
   if (!recipients.length) {
-    console.warn("[contact-form] No recipients configured in Config → Emails. Skipping email.");
+    debugLog("[contact-form] No recipients configured in Config → Emails. Skipping email.");
     return doc;
   }
 
@@ -78,15 +79,15 @@ export const sendEmail: CollectionAfterChangeHook<FormSubmission> = async ({
 
   results.forEach((result, i) => {
     if (result.status === "fulfilled") {
-      console.log(`[contact-form] Email sent to ${recipients[i]}:`, result.value);
+      debugLog("[contact-form] Email sent to", recipients[i], result.value);
     } else {
-      console.error(`[contact-form] Email failed for ${recipients[i]}:`, result.reason);
+      debugLog("[contact-form] Email failed for", recipients[i], result.reason);
     }
   });
 
   return doc;
   } catch (err) {
-    console.error("[contact-form] sendEmail hook error:", err);
+    debugLog("[contact-form] sendEmail hook error:", err);
     throw err;
   }
 };
