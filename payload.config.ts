@@ -51,6 +51,7 @@ export default buildConfig({
     pool: {
       connectionString: env.DATABASE_URL,
     },
+    push: true,
   }),
   editor: editor(),
   email,
