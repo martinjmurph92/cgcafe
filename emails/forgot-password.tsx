@@ -44,7 +44,7 @@ export function ForgotPasswordEmail({
       </Text>
 
       <Text style={{ margin: 0 }}>Thanks,</Text>
-      <Text style={{ margin: 0 }}>The Aqua Team</Text>
+      <Text style={{ margin: 0 }}>The CG Cafe Team</Text>
     </EmailTemplate>
   );
 }

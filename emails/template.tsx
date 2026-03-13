@@ -58,7 +58,7 @@ export function EmailTemplate({
           >
             <Img
               src={`${SITE_URL}/site-logo.png`}
-              alt="Aqua"
+              alt="CG Cafe"
               width={150}
               height={80}
               style={{ display: "block", margin: "0 auto" }}
@@ -75,7 +75,7 @@ export function EmailTemplate({
               textAlign: "center",
             }}
           >
-            <Text style={{ fontSize: "16px" }}>© Aqua</Text>
+            <Text style={{ fontSize: "16px" }}>© CG Cafe</Text>
           </Section>
         </Container>
       </Body>

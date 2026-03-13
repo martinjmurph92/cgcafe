@@ -2,9 +2,10 @@
 
 import * as React from "react";
 import NextLink from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import { LinkFields } from "@/payload/fields/link";
+import { SCROLL_TO_ANCHOR_KEY } from "@/components/scroll-to-anchor";
 import { getDocumentPath } from "@/lib/routing";
 import { isDocument, isMedia } from "@/lib/type-guards";
 
@@ -14,32 +15,49 @@ type LinkProps = Omit<React.ComponentProps<typeof NextLink>, "href"> & {
 
 function Link({ link, onClick, ...props }: LinkProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const { linkProps } = useLinkField(link);
 
   const hashPart =
     linkProps && typeof linkProps.href === "string" && linkProps.href.includes("#")
       ? linkProps.href.split("#")[1]
       : null;
+  const hrefStr = linkProps && typeof linkProps.href === "string" ? linkProps.href : null;
   const isSamePageAnchor =
-    linkProps &&
-    typeof linkProps.href === "string" &&
+    hrefStr &&
     hashPart &&
-    (linkProps.href.startsWith("#") || pathname + "#" + hashPart === linkProps.href);
+    (hrefStr.startsWith("#") || pathname + "#" + hashPart === hrefStr);
+  const isCrossPageAnchor =
+    hrefStr &&
+    hashPart &&
+    linkProps &&
+    linkProps.Comp === NextLink &&
+    !isSamePageAnchor &&
+    (hrefStr.startsWith("/") || hrefStr.startsWith("#"));
 
   const handleClick = React.useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>) => {
       if (isSamePageAnchor && linkProps) {
+        e.preventDefault();
         const href = linkProps.href as string;
         const hash = href.split("#")[1];
         const target = hash ? document.getElementById(hash) : null;
         if (target) {
-          e.preventDefault();
           target.scrollIntoView({ behavior: "smooth" });
+        }
+      } else if (isCrossPageAnchor && linkProps) {
+        const href = linkProps.href as string;
+        const [path, hash] = href.split("#");
+        const targetPath = (path || "/").trim();
+        if (targetPath.startsWith("/")) {
+          e.preventDefault();
+          sessionStorage.setItem(SCROLL_TO_ANCHOR_KEY, hash);
+          router.push(targetPath);
         }
       }
       onClick?.(e as React.MouseEvent<HTMLAnchorElement>);
     },
-    [linkProps, isSamePageAnchor, onClick]
+    [linkProps, isSamePageAnchor, isCrossPageAnchor, router, onClick]
   );
 
   if (!linkProps) return null;

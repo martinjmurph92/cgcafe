@@ -2,7 +2,7 @@
 
 import type { LinkFields } from "@/payload/fields/link";
 
-import { useLinkField } from "@/components/ui/link";
+import { Link } from "@/components/ui/link";
 
 function HeroLink({
   link,
@@ -11,12 +11,9 @@ function HeroLink({
   link: LinkFields;
   variant: "primary" | "outline";
 }) {
-  const { linkProps } = useLinkField(link);
-  if (!linkProps) return null;
-  const { Comp, href, ...rest } = linkProps;
   const baseClass = variant === "primary" ? "btn-primary" : "btn-outline";
   return (
-    <Comp href={href} className={baseClass} {...rest}>
+    <Link link={link} className={baseClass}>
       {link.label}
       {variant === "primary" && (
         <svg
@@ -29,7 +26,7 @@ function HeroLink({
           <path d="M8 0l8 8-8 8-1.4-1.4L12.2 9H0V7h12.2L6.6 1.4z" />
         </svg>
       )}
-    </Comp>
+    </Link>
   );
 }
 

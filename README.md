@@ -1,4 +1,4 @@
-# Aqua
+# CG Cafe
 
 A white-label site base built on **Next.js 15** and **Payload CMS 3**. Use it as a starting point for client projects: clone, add your content and branding, then deploy.
 
@@ -54,8 +54,8 @@ Create a database and set `DATABASE_URL` in `.env`. Payload will create tables o
 Example (local Postgres):
 
 ```bash
-createdb aqua
-# In .env: DATABASE_URL="postgresql://postgres:postgres@localhost:5432/aqua"
+createdb cgcafe
+# In .env: DATABASE_URL="postgresql://postgres:postgres@localhost:5432/cgcafe"
 ```
 
 ### Email testing (Mailpit)
@@ -123,7 +123,7 @@ Pages use a block-based layout; set a page’s slug to `home` to make it the hom
 | `pnpm dev:email` | React Email preview (port 3001) |
 | `pnpm lint` | Run ESLint |
 
-## Using Aqua as a white-label base
+## Using CG Cafe as a white-label base
 
 1. Clone this repo and rename it for the project.
 2. Set up `.env` (and optionally add envs per environment).
@@ -131,4 +131,4 @@ Pages use a block-based layout; set a page’s slug to `home` to make it the hom
 4. Add project-specific collections or blocks in `payload/collections` and `payload/blocks` as needed.
 5. Adjust styling in `app/(site)/globals.css` and components to match the brand.
 
-Aqua keeps a minimal, generic feature set so each project can add its own content and behaviour without fighting the base.
+CG Cafe keeps a minimal, generic feature set so each project can add its own content and behaviour without fighting the base.

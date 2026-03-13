@@ -1,13 +1,13 @@
 {
-  "name": "aqua",
-  "description": "Aqua white-label marketing site base",
+  "name": "cgcafe",
+  "description": "CG Cafe white-label marketing site base",
   "version": "1.0.0",
   "private": true,
   "type": "module",
   "author": {
-    "name": "Adam Mould",
-    "email": "adam@adam-mould.co.uk",
-    "url": "https://adam-mould.co.uk"
+    "name": "Martin Murphy",
+    "email": "martin@mjmdev.co.uk",
+    "url": "https://www.mjmdev.co.uk"
   },
   "scripts": {
     "payload": "payload",
