@@ -19,12 +19,15 @@ export function MenuLink({ link, className, ...props }: LinkProps) {
   const anchor = getAnchorFromHref(linkProps.href as string);
   const isSectionActive =
     anchor && activeSectionId && activeSectionId === anchor;
+  const isPageActive =
+    !anchor && linkProps.href && isActive(linkProps.href as string);
+  const showActive = isSectionActive || isPageActive;
 
   return (
-    <NavigationMenuLink asChild active={isActive(linkProps.href)}>
+    <NavigationMenuLink asChild active={isActive(linkProps.href as string)}>
       <Link
         link={link}
-        className={cn(className, isSectionActive && "nav-link-active")}
+        className={cn(className, showActive && "nav-link-active")}
         {...props}
       />
     </NavigationMenuLink>

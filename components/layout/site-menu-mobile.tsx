@@ -106,13 +106,16 @@ function MobileNavLink({
   link: LinkFields;
   children: React.ReactNode;
 }) {
-  const { linkProps } = useLinkField(link);
+  const { linkProps, isActive } = useLinkField(link);
   const activeSectionId = useActiveSection();
   const anchor = linkProps
     ? getAnchorFromHref(linkProps.href as string)
     : null;
   const isSectionActive =
     anchor && activeSectionId && activeSectionId === anchor;
+  const isPageActive =
+    !anchor && linkProps?.href && isActive(linkProps.href as string);
+  const showActive = isSectionActive || isPageActive;
 
   if (!linkProps) return null;
 
@@ -121,7 +124,7 @@ function MobileNavLink({
       link={link}
       className={cn(
         "block no-underline focus-visible:outline-accent-light aria-[current=page]:text-gold",
-        isSectionActive && "nav-link-active"
+        showActive && "nav-link-active"
       )}
     >
       {children}

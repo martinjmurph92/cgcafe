@@ -1,43 +1,39 @@
 import type { Block } from "payload";
 
-export const IntroStrip: Block = {
-  slug: "introStrip",
-  interfaceName: "IntroStripBlock",
+import { linkFields } from "@/payload/fields/link";
+
+export const CtaBanner: Block = {
+  slug: "ctaBanner",
+  interfaceName: "CtaBannerBlock",
   labels: {
-    plural: "Intro Strip",
-    singular: "Intro Strip",
+    plural: "CTA Banner",
+    singular: "CTA Banner",
   },
   fields: [
     {
-      name: "items",
-      label: "Items",
-      type: "array",
+      name: "label",
+      label: "Eyebrow label",
+      type: "text",
+      admin: {
+        description: "Small label above the title, e.g. 'Join the Team'",
+      },
+    },
+    {
+      name: "title",
+      label: "Title",
+      type: "text",
       required: true,
-      minRows: 1,
-      fields: [
-        {
-          name: "icon",
-          label: "Icon",
-          type: "text",
-          required: true,
-          admin: {
-            description:
-              "CG icon: coffee | breakfast | cake | sandwich | dine | star | vegetarian | phone | location | clock | funfact",
-          },
-        },
-        {
-          name: "label",
-          label: "Label",
-          type: "text",
-          required: true,
-        },
-        {
-          name: "description",
-          label: "Description",
-          type: "text",
-          required: true,
-        },
-      ],
+    },
+    {
+      name: "description",
+      label: "Description",
+      type: "textarea",
+    },
+    {
+      name: "button",
+      label: "Button",
+      type: "group",
+      fields: linkFields,
     },
     {
       label: "Settings",
@@ -54,7 +50,7 @@ export const IntroStrip: Block = {
               name: "py",
               type: "select",
               required: true,
-              defaultValue: "small",
+              defaultValue: "medium",
               options: [
                 { label: "None", value: "none" },
                 { label: "Small (24px)", value: "small" },

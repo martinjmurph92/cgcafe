@@ -21,17 +21,23 @@ export function ActiveSectionProvider({
 
   React.useEffect(() => {
     const HEADER_BOTTOM = 72;
+    const TOLERANCE = 20;
 
     const updateActiveSection = () => {
       const sections = document.querySelectorAll("main [id]");
+      let best: { id: string; top: number } | null = null;
       for (const el of sections) {
         const rect = el.getBoundingClientRect();
-        if (rect.top <= HEADER_BOTTOM && rect.bottom > HEADER_BOTTOM) {
-          setActiveSectionId(el.id);
-          return;
+        if (
+          rect.top <= HEADER_BOTTOM + TOLERANCE &&
+          rect.bottom > HEADER_BOTTOM - TOLERANCE
+        ) {
+          if (!best || rect.top > best.top) {
+            best = { id: el.id, top: rect.top };
+          }
         }
       }
-      setActiveSectionId(null);
+      setActiveSectionId(best?.id ?? null);
     };
 
     updateActiveSection();

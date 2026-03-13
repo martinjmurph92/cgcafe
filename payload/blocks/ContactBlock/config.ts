@@ -39,9 +39,12 @@ export const Contact: Block = {
         },
         {
           name: "icon",
-          label: "Icon (emoji)",
+          label: "Icon",
           type: "text",
-          defaultValue: "📍",
+          admin: {
+            description:
+              "CG icon: coffee | breakfast | cake | sandwich | dine | star | vegetarian | phone | location | clock | funfact. Or use an emoji.",
+          },
         },
         {
           name: "value",

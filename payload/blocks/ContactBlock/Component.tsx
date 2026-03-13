@@ -1,7 +1,17 @@
 import type { ContactBlock as ContactBlockProps } from "@/payload-types";
 import { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical";
 
+import { CgIcon, type CgIconName } from "@/components/icons";
 import { cn } from "@/lib/classnames";
+
+const CG_ICON_NAMES: CgIconName[] = [
+  "coffee", "breakfast", "cake", "sandwich", "dine", "star",
+  "vegetarian", "phone", "location", "clock", "funfact",
+];
+
+function isCgIcon(value: string): value is CgIconName {
+  return CG_ICON_NAMES.includes(value as CgIconName);
+}
 import { RichText } from "@/components/rich-text";
 
 import { ContactForm } from "./ContactForm";
@@ -56,7 +66,11 @@ export function ContactBlock({
                       className="w-10 h-10 border border-gold/25 rounded flex items-center justify-center text-base flex-shrink-0 bg-gold/5"
                       aria-hidden
                     >
-                      {d.icon ?? "📍"}
+                      {d.icon && isCgIcon(d.icon) ? (
+                        <CgIcon name={d.icon} size={24} />
+                      ) : (
+                        d.icon ?? "📍"
+                      )}
                     </div>
                     <div>
                       <strong

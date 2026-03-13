@@ -51,7 +51,7 @@ export function GalleryBlockUI({ images }: { images: GalleryImage[] }) {
   return (
     <>
       <div
-        className="cgcafe-slider flex lg:grid lg:grid-cols-4 gap-3 mt-12 overflow-x-scroll lg:overflow-visible snap-x snap-mandatory lg:snap-none -mx-4 px-4 lg:mx-0 lg:px-0 pb-2 lg:pb-0 min-w-0 min-h-[180px] lg:min-h-0 lg:auto-rows-[180px] [&>*:nth-child(1)]:lg:col-span-2 [&>*:nth-child(5)]:lg:col-span-2"
+        className="cgcafe-slider flex lg:grid lg:grid-cols-4 gap-3 mt-12 overflow-x-scroll lg:overflow-visible snap-x snap-mandatory lg:snap-none lg:mx-0 lg:px-0 pb-2 lg:pb-0 min-w-0 min-h-[180px] lg:min-h-0 lg:auto-rows-[180px] [&>*:nth-child(1)]:lg:col-span-2 [&>*:nth-child(5)]:lg:col-span-2"
         style={{ WebkitOverflowScrolling: "touch" } as React.CSSProperties}
       >
         {images.map((item, i) => {

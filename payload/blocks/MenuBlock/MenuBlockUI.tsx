@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import type { MenuBlock as MenuBlockProps } from "@/payload-types";
 
 import type { MenuCategoryGroup } from "@/actions/menu-items";
+import { CgIcon, type CgIconName } from "@/components/icons";
 import {
   Select,
   SelectContent,
@@ -12,10 +13,22 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-function badgeWithEmoji(badge: string): string {
+function badgeWithIcon(badge: string): React.ReactNode {
   const lower = badge.toLowerCase();
-  if (lower.includes("most popular") || lower === "popular") return `⭐ ${badge}`;
-  if (lower.includes("vegetarian")) return `🌿 ${badge}`;
+  const iconName: CgIconName | null =
+    lower.includes("most popular") || lower === "popular"
+      ? "star"
+      : lower.includes("vegetarian")
+        ? "vegetarian"
+        : null;
+  if (iconName) {
+    return (
+      <>
+        <CgIcon name={iconName} size={16} className="mr-1.5 align-[-0.25rem]" />
+        {badge}
+      </>
+    );
+  }
   return badge;
 }
 
@@ -174,10 +187,10 @@ export function MenuBlockUI({
                 )}
                 {item.badge && (
                   <span
-                    className="inline-block mt-2 text-[0.62rem] uppercase tracking-[0.1em] font-bold px-2 py-0.5 bg-gold/15 text-gold rounded-[2px]"
+                    className="inline-block mt-2 text-[0.62rem] uppercase tracking-[0.1em] font-bold px-2 py-1 bg-gold/15 text-gold rounded-[2px]"
                     style={{ fontFamily: "var(--font-sans), sans-serif" }}
                   >
-                    {badgeWithEmoji(item.badge)}
+                    {badgeWithIcon(item.badge)}
                   </span>
                 )}
               </div>

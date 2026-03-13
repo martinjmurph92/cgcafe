@@ -1,5 +1,6 @@
 import type { HoursBlock as HoursBlockProps } from "@/payload-types";
 
+import { CgIcon } from "@/components/icons";
 import { cn } from "@/lib/classnames";
 
 function getMapEmbedUrl(address: string): string {
@@ -81,7 +82,10 @@ export function HoursBlock({
               {phone && (
                 <>
                   {"\n\n"}
-                  📞 {phone}
+                  <span className="inline-flex items-center gap-2">
+                    <CgIcon name="phone" size={16} className="shrink-0" />
+                    <span className="text-cream">{phone}</span>
+                  </span>
                 </>
               )}
             </p>

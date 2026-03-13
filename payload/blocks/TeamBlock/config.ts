@@ -1,44 +1,13 @@
 import type { Block } from "payload";
 
-export const IntroStrip: Block = {
-  slug: "introStrip",
-  interfaceName: "IntroStripBlock",
+export const Team: Block = {
+  slug: "team",
+  interfaceName: "TeamBlock",
   labels: {
-    plural: "Intro Strip",
-    singular: "Intro Strip",
+    plural: "Team",
+    singular: "Team",
   },
   fields: [
-    {
-      name: "items",
-      label: "Items",
-      type: "array",
-      required: true,
-      minRows: 1,
-      fields: [
-        {
-          name: "icon",
-          label: "Icon",
-          type: "text",
-          required: true,
-          admin: {
-            description:
-              "CG icon: coffee | breakfast | cake | sandwich | dine | star | vegetarian | phone | location | clock | funfact",
-          },
-        },
-        {
-          name: "label",
-          label: "Label",
-          type: "text",
-          required: true,
-        },
-        {
-          name: "description",
-          label: "Description",
-          type: "text",
-          required: true,
-        },
-      ],
-    },
     {
       label: "Settings",
       type: "collapsible",
@@ -54,7 +23,7 @@ export const IntroStrip: Block = {
               name: "py",
               type: "select",
               required: true,
-              defaultValue: "small",
+              defaultValue: "medium",
               options: [
                 { label: "None", value: "none" },
                 { label: "Small (24px)", value: "small" },

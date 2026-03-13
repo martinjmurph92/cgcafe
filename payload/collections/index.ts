@@ -6,6 +6,7 @@ import { Media } from "./Media";
 import { MenuItems } from "./MenuItems";
 import { Pages } from "./Pages";
 import { Posts } from "./Posts";
+import { TeamMembers } from "./TeamMembers";
 
 export { Admins } from "./Admins";
 export { FormSubmissions } from "./FormSubmissions";
@@ -13,6 +14,7 @@ export { Media } from "./Media";
 export { MenuItems } from "./MenuItems";
 export { Pages } from "./Pages";
 export { Posts } from "./Posts";
+export { TeamMembers } from "./TeamMembers";
 
 // The order of the collections here is the order they will appear in the admin panel
 export const collections: CollectionConfig[] = [
@@ -21,5 +23,6 @@ export const collections: CollectionConfig[] = [
   Pages,
   Posts,
   MenuItems,
+  TeamMembers,
   FormSubmissions,
 ];

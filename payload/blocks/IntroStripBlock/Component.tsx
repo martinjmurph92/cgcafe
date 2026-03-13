@@ -1,7 +1,26 @@
 import React from "react";
 import type { IntroStripBlock as IntroStripBlockProps } from "@/payload-types";
 
+import { CgIcon, type CgIconName } from "@/components/icons";
 import { cn } from "@/lib/classnames";
+
+const CG_ICON_NAMES: CgIconName[] = [
+  "coffee",
+  "breakfast",
+  "cake",
+  "sandwich",
+  "dine",
+  "star",
+  "vegetarian",
+  "phone",
+  "location",
+  "clock",
+  "funfact",
+];
+
+function isCgIcon(value: string): value is CgIconName {
+  return CG_ICON_NAMES.includes(value as CgIconName);
+}
 
 const lgCols: Record<number, string> = {
   1: "lg:grid-cols-1",
@@ -45,7 +64,11 @@ export function IntroStripBlock({ items, settings }: IntroStripBlockProps) {
                 "lg:[&:not(:first-child)]:border-l lg:[&:not(:first-child)]:border-gold/20 lg:[&:not(:first-child)]:pl-8"
               )}
             >
-              <span className="text-2xl leading-none">{item.icon}</span>
+              {isCgIcon(item.icon) ? (
+                <CgIcon name={item.icon} size={24} />
+              ) : (
+                <span className="text-2xl leading-none">{item.icon}</span>
+              )}
               <span className="cgcafe-label">{item.label}</span>
               <p
                 className="text-sm text-cream-muted"

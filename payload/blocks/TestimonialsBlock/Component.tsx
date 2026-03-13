@@ -41,7 +41,7 @@ export function TestimonialsBlock({
         </div>
 
         <div
-          className="cgcafe-slider flex md:grid md:grid-cols-3 gap-6 md:gap-8 overflow-x-scroll md:overflow-visible snap-x snap-mandatory md:snap-none -mx-4 px-4 md:mx-0 md:px-0 pb-2 md:pb-0 min-w-0"
+          className="cgcafe-slider flex md:grid md:grid-cols-3 gap-6 md:gap-8 overflow-x-scroll md:overflow-visible snap-x snap-mandatory md:snap-none md:mx-0 md:px-0 pb-2 md:pb-0 min-w-0"
           style={{ WebkitOverflowScrolling: "touch" } as React.CSSProperties}
         >
           {safeItems.map((item, i) => (

@@ -1,43 +1,34 @@
 import type { Block } from "payload";
 
-export const IntroStrip: Block = {
-  slug: "introStrip",
-  interfaceName: "IntroStripBlock",
+export const TextHero: Block = {
+  slug: "textHero",
+  interfaceName: "TextHeroBlock",
   labels: {
-    plural: "Intro Strip",
-    singular: "Intro Strip",
+    plural: "Text Hero",
+    singular: "Text Hero",
   },
   fields: [
     {
-      name: "items",
-      label: "Items",
-      type: "array",
+      name: "label",
+      label: "Eyebrow label",
+      type: "text",
+      admin: {
+        description: "Small label above the title, e.g. 'The People Behind the Cup'",
+      },
+    },
+    {
+      name: "title",
+      label: "Title",
+      type: "text",
       required: true,
-      minRows: 1,
-      fields: [
-        {
-          name: "icon",
-          label: "Icon",
-          type: "text",
-          required: true,
-          admin: {
-            description:
-              "CG icon: coffee | breakfast | cake | sandwich | dine | star | vegetarian | phone | location | clock | funfact",
-          },
-        },
-        {
-          name: "label",
-          label: "Label",
-          type: "text",
-          required: true,
-        },
-        {
-          name: "description",
-          label: "Description",
-          type: "text",
-          required: true,
-        },
-      ],
+      admin: {
+        description: "The last word will be styled in italic/gold",
+      },
+    },
+    {
+      name: "subtitle",
+      label: "Subtitle",
+      type: "textarea",
     },
     {
       label: "Settings",
@@ -54,7 +45,7 @@ export const IntroStrip: Block = {
               name: "py",
               type: "select",
               required: true,
-              defaultValue: "small",
+              defaultValue: "medium",
               options: [
                 { label: "None", value: "none" },
                 { label: "Small (24px)", value: "small" },

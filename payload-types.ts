@@ -72,6 +72,7 @@ export interface Config {
     pages: Page;
     posts: Post;
     'menu-items': MenuItem;
+    'team-members': TeamMember;
     'form-submissions': FormSubmission;
     exports: Export;
     redirects: Redirect;
@@ -88,6 +89,7 @@ export interface Config {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     'menu-items': MenuItemsSelect<false> | MenuItemsSelect<true>;
+    'team-members': TeamMembersSelect<false> | TeamMembersSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     exports: ExportsSelect<false> | ExportsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
@@ -248,6 +250,7 @@ export interface Page {
   blocks?:
     | (
         | ContactBlock
+        | CtaBannerBlock
         | ContentBlock
         | GalleryBlock
         | HoursBlock
@@ -255,7 +258,9 @@ export interface Page {
         | MenuBlock
         | MediaTextBlock
         | PageHeroBlock
+        | TeamBlock
         | TestimonialsBlock
+        | TextHeroBlock
       )[]
     | null;
   meta?: {
@@ -301,6 +306,9 @@ export interface ContactBlock {
          * e.g. Address, Phone, Email, Hours
          */
         label: string;
+        /**
+         * CG icon: coffee | breakfast | cake | sandwich | dine | star | vegetarian | phone | location | clock | funfact. Or use an emoji.
+         */
         icon?: string | null;
         value: string;
         id?: string | null;
@@ -316,6 +324,90 @@ export interface ContactBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'contact';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CtaBannerBlock".
+ */
+export interface CtaBannerBlock {
+  /**
+   * Small label above the title, e.g. 'Join the Team'
+   */
+  label?: string | null;
+  title: string;
+  description?: string | null;
+  button: {
+    linkType: 'internal' | 'custom';
+    newTab?: boolean | null;
+    internalLink?:
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'media';
+          value: number | Media;
+        } | null);
+    customLink?: string | null;
+    label: string;
+    id?: string | null;
+  };
+  settings: {
+    py: 'none' | 'small' | 'medium' | 'large';
+    /**
+     * The anchor for the block. Used for in-page links.
+     */
+    anchor?: string | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ctaBanner';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: number;
+  title: string;
+  image?: (number | null) | Media;
+  /**
+   * A short summary of the article.
+   */
+  summary?: string | null;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  slug: string;
+  publishedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -415,7 +507,7 @@ export interface HoursBlock {
 export interface IntroStripBlock {
   items: {
     /**
-     * e.g. ☕ 🍳 🎂
+     * CG icon: coffee | breakfast | cake | sandwich | dine | star | vegetarian | phone | location | clock | funfact
      */
     icon: string;
     label: string;
@@ -533,48 +625,6 @@ export interface MediaTextBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts".
- */
-export interface Post {
-  id: number;
-  title: string;
-  image?: (number | null) | Media;
-  /**
-   * A short summary of the article.
-   */
-  summary?: string | null;
-  content?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    description?: string | null;
-  };
-  slug: string;
-  publishedAt?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  deletedAt?: string | null;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "PageHeroBlock".
  */
 export interface PageHeroBlock {
@@ -625,6 +675,22 @@ export interface PageHeroBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TeamBlock".
+ */
+export interface TeamBlock {
+  settings: {
+    py: 'none' | 'small' | 'medium' | 'large';
+    /**
+     * The anchor for the block. Used for in-page links.
+     */
+    anchor?: string | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'team';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TestimonialsBlock".
  */
 export interface TestimonialsBlock {
@@ -656,6 +722,31 @@ export interface TestimonialsBlock {
   blockType: 'testimonials';
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TextHeroBlock".
+ */
+export interface TextHeroBlock {
+  /**
+   * Small label above the title, e.g. 'The People Behind the Cup'
+   */
+  label?: string | null;
+  /**
+   * The last word will be styled in italic/gold
+   */
+  title: string;
+  subtitle?: string | null;
+  settings: {
+    py: 'none' | 'small' | 'medium' | 'large';
+    /**
+     * The anchor for the block. Used for in-page links.
+     */
+    anchor?: string | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'textHero';
+}
+/**
  * Manage menu items. Used by the Menu block on the site.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -679,6 +770,43 @@ export interface MenuItem {
   badge?: string | null;
   /**
    * Lower numbers appear first within the category.
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Team members shown on the Team page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "team-members".
+ */
+export interface TeamMember {
+  id: number;
+  name: string;
+  /**
+   * Optional. If empty, initials are shown.
+   */
+  photo?: (number | null) | Media;
+  /**
+   * Determines card layout: owners (2-col), manager, supervisor, crew grid.
+   */
+  role: 'owner' | 'manager' | 'supervisor' | 'crew';
+  /**
+   * e.g. "Co-Owner & Head of Operations"
+   */
+  jobTitle: string;
+  bio: string;
+  /**
+   * e.g. "Double espresso, no sugar"
+   */
+  favouriteOrder?: string | null;
+  /**
+   * e.g. "Trained as a chef before switching to front of house"
+   */
+  funFact?: string | null;
+  /**
+   * Sort order within role. Lower numbers appear first.
    */
   order?: number | null;
   updatedAt: string;
@@ -876,6 +1004,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'menu-items';
         value: number | MenuItem;
+      } | null)
+    | ({
+        relationTo: 'team-members';
+        value: number | TeamMember;
       } | null)
     | ({
         relationTo: 'form-submissions';
@@ -1095,6 +1227,7 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         contact?: T | ContactBlockSelect<T>;
+        ctaBanner?: T | CtaBannerBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
         gallery?: T | GalleryBlockSelect<T>;
         hours?: T | HoursBlockSelect<T>;
@@ -1102,7 +1235,9 @@ export interface PagesSelect<T extends boolean = true> {
         menu?: T | MenuBlockSelect<T>;
         mediaText?: T | MediaTextBlockSelect<T>;
         pageHero?: T | PageHeroBlockSelect<T>;
+        team?: T | TeamBlockSelect<T>;
         testimonials?: T | TestimonialsBlockSelect<T>;
+        textHero?: T | TextHeroBlockSelect<T>;
       };
   meta?:
     | T
@@ -1132,6 +1267,33 @@ export interface ContactBlockSelect<T extends boolean = true> {
         label?: T;
         icon?: T;
         value?: T;
+        id?: T;
+      };
+  settings?:
+    | T
+    | {
+        py?: T;
+        anchor?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CtaBannerBlock_select".
+ */
+export interface CtaBannerBlockSelect<T extends boolean = true> {
+  label?: T;
+  title?: T;
+  description?: T;
+  button?:
+    | T
+    | {
+        linkType?: T;
+        newTab?: T;
+        internalLink?: T;
+        customLink?: T;
+        label?: T;
         id?: T;
       };
   settings?:
@@ -1325,6 +1487,20 @@ export interface PageHeroBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TeamBlock_select".
+ */
+export interface TeamBlockSelect<T extends boolean = true> {
+  settings?:
+    | T
+    | {
+        py?: T;
+        anchor?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TestimonialsBlock_select".
  */
 export interface TestimonialsBlockSelect<T extends boolean = true> {
@@ -1340,6 +1516,23 @@ export interface TestimonialsBlockSelect<T extends boolean = true> {
         authorSub?: T;
         id?: T;
       };
+  settings?:
+    | T
+    | {
+        py?: T;
+        anchor?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TextHeroBlock_select".
+ */
+export interface TextHeroBlockSelect<T extends boolean = true> {
+  label?: T;
+  title?: T;
+  subtitle?: T;
   settings?:
     | T
     | {
@@ -1382,6 +1575,22 @@ export interface MenuItemsSelect<T extends boolean = true> {
   price?: T;
   description?: T;
   badge?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "team-members_select".
+ */
+export interface TeamMembersSelect<T extends boolean = true> {
+  name?: T;
+  photo?: T;
+  role?: T;
+  jobTitle?: T;
+  bio?: T;
+  favouriteOrder?: T;
+  funFact?: T;
   order?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1795,7 +2004,7 @@ export interface Config1 {
   };
   email: {
     /**
-     * The email address where form submissions will be sent.
+     * Email address(es) to receive contact form submissions. Use commas to add multiple.
      */
     emailTo: string;
     subject: string;
