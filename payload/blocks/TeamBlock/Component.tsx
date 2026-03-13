@@ -1,6 +1,7 @@
 import type { TeamBlock as TeamBlockProps } from "@/payload-types";
 
 import { getTeamMembersGroupedByRole } from "@/actions/team-members";
+import { CgIcon } from "@/components/icons";
 import { MediaImage } from "@/components/media-image";
 import { cn } from "@/lib/classnames";
 import { isMedia } from "@/lib/type-guards";
@@ -70,7 +71,7 @@ function OwnerCard({ member }: { member: Record<string, unknown> }) {
         <div className="pt-5 border-t border-gold/10 space-y-2">
           {m.favouriteOrder && (
             <div className="flex items-start gap-2 font-sans text-sm text-cream-muted">
-              <span className="text-base flex-shrink-0">☕</span>
+              <CgIcon name="coffee" size={16} className="mt-0.5" />
               <span>
                 <strong className="text-gold">Favourite order:</strong>{" "}
                 {m.favouriteOrder}
@@ -79,7 +80,7 @@ function OwnerCard({ member }: { member: Record<string, unknown> }) {
           )}
           {m.funFact && (
             <div className="flex items-start gap-2 font-sans text-sm text-cream-muted">
-              <span className="text-base flex-shrink-0">🌟</span>
+              <CgIcon name="funfact" size={16} className="mt-0.5" />
               <span>
                 <strong className="text-gold">Fun fact:</strong> {m.funFact}
               </span>
@@ -134,7 +135,10 @@ function ManagerCard({ member }: { member: Record<string, unknown> }) {
         <div className="flex flex-col justify-center gap-4">
           {m.favouriteOrder ? (
             <div className="bg-charcoal-3 border border-gold/[0.08] rounded-sm p-4">
-              <span className="cgcafe-label block mb-1">Favourite order</span>
+              <span className="cgcafe-label flex items-center gap-2 mb-1">
+                <CgIcon name="coffee" size={16} />
+                Favourite order
+              </span>
               <p className="font-sans text-sm text-cream-muted leading-relaxed">
                 {String(m.favouriteOrder)}
               </p>
@@ -142,7 +146,10 @@ function ManagerCard({ member }: { member: Record<string, unknown> }) {
           ) : null}
           {m.funFact ? (
             <div className="bg-charcoal-3 border border-gold/[0.08] rounded-sm p-4">
-              <span className="cgcafe-label block mb-1">Fun fact</span>
+              <span className="cgcafe-label flex items-center gap-2 mb-1">
+                <CgIcon name="funfact" size={16} />
+                Fun fact
+              </span>
               <p className="font-sans text-sm text-cream-muted leading-relaxed">
                 {String(m.funFact)}
               </p>
@@ -157,9 +164,9 @@ function ManagerCard({ member }: { member: Record<string, unknown> }) {
 function SupervisorCard({ member }: { member: Record<string, unknown> }) {
   const m = member;
   const initials = getInitials((m.name as string) ?? "");
-  const facts: Array<{ label: string; value: string }> = [];
-  if (m.favouriteOrder) facts.push({ label: "Order", value: m.favouriteOrder as string });
-  if (m.funFact) facts.push({ label: "Fun fact", value: m.funFact as string });
+  const facts: Array<{ label: string; value: string; icon: "coffee" | "funfact" }> = [];
+  if (m.favouriteOrder) facts.push({ label: "Order", value: m.favouriteOrder as string, icon: "coffee" });
+  if (m.funFact) facts.push({ label: "Fun fact", value: m.funFact as string, icon: "funfact" });
   return (
     <div className="rounded-[var(--radius-lg)] overflow-hidden border border-gold/10 bg-charcoal-2 grid grid-cols-1 md:grid-cols-[260px_1fr] transition-[border-color,box-shadow] hover:border-gold/30 hover:shadow-xl">
       <div className="relative min-h-[140px] md:min-h-[240px] flex flex-col items-center justify-end p-6 md:p-8 bg-gradient-to-b from-charcoal-3 to-gold/[0.08]">
@@ -202,6 +209,7 @@ function SupervisorCard({ member }: { member: Record<string, unknown> }) {
                 key={i}
                 className="bg-charcoal-3 border border-gold/[0.08] rounded px-3 py-2 flex items-center gap-2 font-sans text-[0.78rem] text-cream-muted"
               >
+                <CgIcon name={f.icon} size={16} />
                 <span>
                   <strong className="text-gold">{f.label}:</strong> {f.value}
                 </span>
@@ -218,7 +226,12 @@ function CrewCard({ member }: { member: Record<string, unknown> }) {
   const m = member;
   const initials = getInitials((m.name as string) ?? "");
   return (
-    <div className="rounded-[var(--radius-md)] overflow-hidden border border-gold/10 bg-charcoal-2 transition-[border-color,box-shadow,transform] hover:border-gold/28 hover:-translate-y-1 hover:shadow-xl cursor-default">
+    <div
+      className="rounded-[var(--radius-md)] overflow-hidden border border-gold/10 bg-charcoal-2 hover:border-gold/28 hover:shadow-xl cursor-default [transform:translateZ(0)] hover:[transform:translate3d(0,-4px,0)]"
+      style={{
+        transition: "transform 0.4s cubic-bezier(0.33, 1, 0.68, 1)",
+      }}
+    >
       <div className="aspect-[4/3] bg-gradient-to-b from-charcoal-3 to-gold/[0.07] flex flex-col items-center justify-center relative">
         {isMedia(m.photo) && (m.photo as { url?: string }).url ? (
           <MediaImage
@@ -247,12 +260,24 @@ function CrewCard({ member }: { member: Record<string, unknown> }) {
         <p className="font-sans text-[0.82rem] text-cream-muted leading-relaxed mb-5">
           {m.bio as string}
         </p>
-        {m.favouriteOrder ? (
-          <div className="flex items-center gap-2 font-sans text-[0.76rem] text-cream-muted bg-charcoal-3 rounded px-2.5 py-2 border border-gold/[0.07]">
-            <span className="text-sm">☕</span>
-            <strong className="text-gold">Goes for:</strong> {String(m.favouriteOrder)}
-          </div>
-        ) : null}
+        <div className="space-y-2">
+          {m.favouriteOrder ? (
+            <div className="flex items-start gap-2 font-sans text-[0.76rem] text-cream-muted bg-charcoal-3 rounded px-2.5 py-2 border border-gold/[0.07]">
+              <CgIcon name="coffee" size={16} className="flex-shrink-0 mt-0.5" />
+              <span>
+                <strong className="text-gold">Goes for:</strong> {String(m.favouriteOrder)}
+              </span>
+            </div>
+          ) : null}
+          {m.funFact ? (
+            <div className="flex items-start gap-2 font-sans text-[0.76rem] text-cream-muted bg-charcoal-3 rounded px-2.5 py-2 border border-gold/[0.07]">
+              <CgIcon name="funfact" size={16} className="flex-shrink-0 mt-0.5" />
+              <span>
+                <strong className="text-gold">Fun fact:</strong> {String(m.funFact)}
+              </span>
+            </div>
+          ) : null}
+        </div>
       </div>
     </div>
   );
@@ -284,11 +309,10 @@ export async function TeamBlock({ settings }: TeamBlockProps) {
           <div
             key={group.id}
             className={cn(
-              group.value !== "owner" && "mt-0",
-              group.value === "owner" && "pb-0",
-              group.value === "manager" && "bg-charcoal-2 -mx-4 px-4 md:mx-0 md:px-0 py-8 md:py-12",
-              group.value === "supervisor" && "py-8 md:py-12",
-              group.value === "crew" && "py-8 md:py-12 bg-charcoal-2 -mx-4 px-4 md:mx-0 md:px-0 rounded-none"
+              group.value === "owner" && "pb-8 md:pb-12",
+              group.value === "manager" && "pb-8 md:pb-12",
+              group.value === "supervisor" && "pb-8 md:pb-12",
+              group.value === "crew" && "pb-0"
             )}
           >
             <div className="container">
